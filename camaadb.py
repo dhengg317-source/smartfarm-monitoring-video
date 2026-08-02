@@ -27,7 +27,7 @@ except Exception as e:
     st.error(f"Supabase 연결 실패: {e}")
     st.stop()
 
-st.title("🌱 스마트팜 ESP32-CAM 통합 모니터링 시스템")
+st.title("🌱 스마트팜 통합 모니터링 시스템")
 st.markdown("---")
 
 # 상단: 실시간 라이브 동영상 스트림
