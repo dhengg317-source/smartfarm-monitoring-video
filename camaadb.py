@@ -86,17 +86,30 @@ if not df.empty:
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        st.markdown("##### 🖼️ 최신 저장 스냅샷")
-        latest_record = df.iloc[0]
-        
-        # use_column_width=True -> use_container_width=True 수정
-        image_url = latest_record.get('image_url', '')
-        if image_url:
-            st.image(image_url, caption=f"저장시각: {latest_record['created_at'].strftime('%Y-%m-%d %H:%M:%S')}", use_container_width=True)
-        
-        st.metric(label="최근 측정 온도", value=f"{latest_record.get('temp', 0.0)} °C")
-        st.metric(label="최근 측정 습도", value=f"{latest_record.get('humi', 0.0)} %")
+    st.markdown("##### 🖼️ 최신 저장 스냅샷")
+    latest_record = df.iloc[0]
+    
+    image_url = latest_record.get('image_url', '')
+    
+    # 시간 표시 안전 처리
+    created_at_val = latest_record.get('created_at', '')
+    if hasattr(created_at_val, 'strftime'):
+        time_str = created_at_val.strftime('%Y-%m-%d %H:%M:%S')
+    else:
+        time_str = str(created_at_val)[:19] # 문자열일 경우 앞 19자리(YYYY-MM-DD HH:MM:SS)만 잘라냄
+    
+    # 이미지 표시 (예외 처리 추가)
+    if image_url and str(image_url).startswith('http'):
+        try:
+            st.image(image_url, caption=f"저장시간: {time_str}", use_container_width=True)
+        except Exception as e:
+            st.warning("⚠️ 이미지를 로드할 수 없습니다.")
+    else:
+        st.warning("📷 저장된 이미지 링크가 없습니다.")
 
+    st.metric(label="최근 측정 온도", value=f"{latest_record.get('temp', 0.0)} °C")
+    st.metric(label="최근 측정 습도", value=f"{latest_record.get('humi', 0.0)} %")
+    
     # 과거 로그 데이터표 출력
     with st.expander("📋 상세 데이터 로그 확인"):
         # 필요한 컬럼만 추출 (없는 경우 대비 안전 처리)
