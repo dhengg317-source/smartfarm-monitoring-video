@@ -5,7 +5,7 @@ import plotly.express as px
 from supabase import create_client, Client
 
 # 웹 페이지 레이아웃 설정
-st.set_page_config(page_title="스마트팜 통합 관제 센터", layout="wide", page_icon="🌱")
+st.set_page_config(page_title="스마트팜 통합 관제 센터", layout="centered", page_icon="🌱")
 
 # ==========================================
 # 1. 설정 정보 (본인 환경에 맞게 수정)
