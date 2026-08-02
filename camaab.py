@@ -12,7 +12,7 @@ load_dotenv()                               # 2. .env 파일 읽기
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")    # 3. st.secrets 대신 os.getenv 사용
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-ESP32_IP = "http://192.168.0.23" or "http://192.168.1.27"
+ESP32_IP = "http://192.168.0.23"
 
 SAVE_INTERVAL = 600  # 10분(600초) 10분간격 저장
 
