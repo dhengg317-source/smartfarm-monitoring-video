@@ -7,6 +7,34 @@ from supabase import create_client, Client
 # 웹 페이지 레이아웃 설정
 st.set_page_config(page_title="스마트팜 통합 관제 센터", layout="centered", page_icon="🌱")
 
+# ====================================================
+# 비밀번호 인증 함수 정의 및 실행 (로그인 대문)
+# ====================================================
+def check_password():
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
+
+    if not st.session_state["authenticated"]:
+        st.title("🔒 건국동 스마트팜 영상 관리자")
+
+        if "ADMIN_PASSWORD" not in st.secrets:
+            st.error("Secrets에 ADMIN_PASSWORD가 설정되지 않았습니다.")
+            st.stop()
+
+        pwd = st.text_input("비밀번호를 입력하세요", type="password")
+
+        if st.button("로그인"):
+            if pwd == st.secrets["ADMIN_PASSWORD"]:
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("비밀번호가 올바르지 않습니다.")
+
+        st.stop()
+
+# 로그인 검증 실행 (비밀번호 인증 성공 전까지 하단 코드 실행 중단)
+check_password()
+
 # ==========================================
 # 1. 설정 정보 (본인 환경에 맞게 수정)
 # ==========================================
@@ -27,7 +55,7 @@ except Exception as e:
     st.error(f"Supabase 연결 실패: {e}")
     st.stop()
 
-st.title("🌱 스마트팜 통합 모니터링 시스템")
+st.title("🌱 스마트팜 ESP32-CAM 통합 모니터링 시스템")
 st.markdown("---")
 
 # 상단: 실시간 라이브 동영상 스트림
